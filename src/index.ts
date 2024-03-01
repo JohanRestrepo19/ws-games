@@ -1,7 +1,7 @@
-import { myGreetingFunc } from "@/models/TicTacToe";
+import {myGreetingFunc} from '@/models/TicTacToe';
 
 function main() {
-  myGreetingFunc("Johan");
+    myGreetingFunc('Johan');
 }
 
 main();
