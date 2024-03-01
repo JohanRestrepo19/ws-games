@@ -1,0 +1,23 @@
+{
+    "name": "ws-games",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "format": "npx prettier --write .",
+        "start": "ts-node -r tsconfig-paths/register src/index.ts",
+        "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@types/node": "^20.11.24"
+    },
+    "devDependencies": {
+        "ts-node": "^10.9.2",
+        "tsconfig-paths": "^4.2.0",
+        "typescript": "^5.3.3"
+    }
+}
