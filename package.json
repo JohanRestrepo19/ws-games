@@ -4,10 +4,11 @@
     "description": "",
     "main": "dist/index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "npx tsc",
+        "dev": "npx nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
         "format": "npx prettier --write .",
-        "start": "ts-node -r tsconfig-paths/register src/index.ts",
-        "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts"
+        "start": "node -r ./tsconfig-paths-bootstrap.js dist/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
     "author": "",
@@ -16,6 +17,7 @@
         "@types/node": "^20.11.24"
     },
     "devDependencies": {
+        "nodemon": "^3.1.0",
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0",
         "typescript": "^5.3.3"

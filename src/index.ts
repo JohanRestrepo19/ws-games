@@ -4,4 +4,4 @@ function main() {
   myGreetingFunc("Johan");
 }
 
-// main();
+main();

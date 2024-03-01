@@ -6,11 +6,8 @@
 
 ## Dev Dependencies
 - [ ] prettier
-- [x] eslint
+- [ ] eslint
 - [ ] eslint-config-prettier
-- [ ] tsconfig-paths
-- [ ] ts-node
-- [ ] nodemon
-
-
-## tsconfig file
+- [x] tsconfig-paths
+- [x] ts-node
+- [x] nodemon
