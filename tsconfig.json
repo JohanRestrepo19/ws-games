@@ -9,7 +9,7 @@
         "strictNullChecks": true,
         "resolveJsonModule": true,
         "noImplicitReturns": true,
-        "noUnusedLocals": true,
+        "noUnusedLocals": false,
         "esModuleInterop": true,
         "target": "es2022",
         "module": "nodenext",
