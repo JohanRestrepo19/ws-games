@@ -54,7 +54,6 @@ export default class TicTacToe {
         this.availableMoves--;
 
         this.checkGameState();
-        this.printBoard();
 
         this.currentPiece = this.currentPiece === 'X' ? 'O' : 'X';
         return this.gameState;
@@ -86,5 +85,9 @@ export default class TicTacToe {
         console.log('my game: ');
         this.board.forEach(row => console.log(row));
         console.log();
+    }
+
+    get currentBoard() {
+        return this.board
     }
 }
