@@ -1,8 +1,3 @@
-export type Piece = 'X' | 'O';
-export type Cell = Piece | null;
-export type Position = {row: number; col: number};
-export type GameState = Piece | 'playing' | 'draw';
-
 // prettier-ignore
 const WINNER_SET_POSITIONS: Position[][] = [
     //Rows
@@ -18,12 +13,39 @@ const WINNER_SET_POSITIONS: Position[][] = [
     [ {row: 0, col: 2}, {row: 1, col: 1}, {row: 2, col: 0} ],
 ];
 
+export type Piece = 'X' | 'O';
+export type Cell = Piece | null;
+export type Position = {row: number; col: number};
+export type GameState = Piece | 'playing' | 'draw';
+
+/**
+ * Represents a Tic Tac Toe Game.
+ */
 export default class TicTacToe {
-    currentPiece: Piece;
+    /**
+     * The current piece that is making a move.
+     */
+    public currentPiece: Piece;
+
+    /**
+     * The current state of the game.
+     */
     private gameState: GameState;
+
+    /**
+     * The number of availabe moves left in the game.
+     */
     private availableMoves: number;
+
+    /**
+     * The game board, represented as 3x3 grid of cells.
+     */
     private board: Cell[][];
 
+    /**
+     * Constructs a new Tic Tac Toe Game.
+     * @param [initialPiece='X'] The initial piece to start the game.
+     */
     constructor(initialPiece: Piece = 'X') {
         this.currentPiece = initialPiece;
         this.board = [];
@@ -36,19 +58,19 @@ export default class TicTacToe {
         }
     }
 
+    /**
+     * Makes a move in the game at the specified position.
+     * @param position The position on the board to make the move.
+     * @returns The current state of the game after the move.
+     * @throws Error if the move is not valid.
+     * @throws Error if the game has over.
+     */
     makeMove(position: Position): GameState {
         const {row, col} = position;
 
-        if (
-            this.gameState === 'draw' ||
-            this.gameState === 'O' ||
-            this.gameState === 'X'
-        ) {
-            return this.gameState;
-        }
-
         // Check for valid move
         if (this.board[row][col]) throw new Error('Not a valid move!');
+        if (this.gameState !== 'playing') throw new Error(`Game has over ${this.gameState} has won`);
 
         this.board[row][col] = this.currentPiece;
         this.availableMoves--;
@@ -59,6 +81,9 @@ export default class TicTacToe {
         return this.gameState;
     }
 
+    /**
+     * Checks the current state of the game to determine if a player has won or if it's a draw.
+     */
     checkGameState(): void {
         // I have to check inside my board if one of two players has won
         const players = ['X', 'O'] as const;
@@ -88,6 +113,10 @@ export default class TicTacToe {
     }
 
     get currentBoard() {
-        return this.board
+        return this.board;
+    }
+
+    get currentAvailableMoves() {
+        return this.availableMoves;
     }
 }
