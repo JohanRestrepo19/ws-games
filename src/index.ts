@@ -1,27 +1,14 @@
-import TicTacToe, {type GameState} from '@/models/TicTacToe';
+import express from 'express';
+import {createServer} from 'node:http';
 
-function main() {
-    const game = new TicTacToe('O');
-    let gameResult: GameState;
+const app = express();
+const server = createServer(app);
+const port = process.env.PORT || 8080;
 
-    gameResult = game.makeMove({row: 0, col: 0});
-    console.log('Winner from main: ', gameResult);
+app.get('/', (_, res) => {
+    res.send('<h1>Hellow World!</h1>');
+});
 
-    gameResult = game.makeMove({row: 1, col: 0});
-    console.log('Winner from main: ', gameResult);
-
-    gameResult = game.makeMove({row: 0, col: 1});
-    console.log('Winner from main: ', gameResult);
-
-    gameResult = game.makeMove({row: 1, col: 1});
-    console.log('Winner from main: ', gameResult);
-
-    gameResult = game.makeMove({row: 0, col: 2});
-    console.log('Winner from main: ', gameResult);
-
-    gameResult = game.makeMove({row: 1, col: 2});
-    console.log('Winner from main: ', gameResult);
-}
-
-//TODO: Test my TicTacToe class
-main();
+server.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
