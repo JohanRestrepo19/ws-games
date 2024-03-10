@@ -7,6 +7,8 @@ import type {
     InterServerEvents,
     ServerToClientEvents,
     SocketData,
+    TicTacToeClientToServerEvents,
+    TicTacToeServerToClientEvents,
 } from './lib/types';
 
 const requestListener = express();
@@ -23,7 +25,6 @@ export const io = new Server<
 });
 
 // ======= Main Namespace =======
-
 io.on('connection', socket => {
     console.log('New connection to Main NSP, ', socket.id);
 
@@ -41,17 +42,18 @@ io.on('connection', socket => {
 });
 
 // ======= TicTacToe Namespace =======
-
-interface TicTacToeClientToServerEvents {}
-interface TicTacToeServerToClientEvents {}
-
 const ticTacToeNamespace: Namespace<
     TicTacToeClientToServerEvents,
     TicTacToeServerToClientEvents
-> = io.of('/tictactoe');
+> = io.of('/tic-tac-toe');
 
-ticTacToeNamespace.on('connect', socket => {
+ticTacToeNamespace.on('connection', socket => {
     console.log('New connection to TicTacToe NSP, ', socket.id);
+
+    // Event Listeners.
+    socket.on('disconnect', reason => {
+        console.log('Reason: ', reason);
+    });
 });
 
 server.listen(port, () => {
