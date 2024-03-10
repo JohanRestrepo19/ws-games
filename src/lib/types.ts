@@ -1,6 +1,5 @@
 export interface ServerToClientEvents {
     pong: (msg: string) => void;
-    basicEmit: (a: number, b: string) => void;
 }
 
 export interface ClientToServerEvents {
