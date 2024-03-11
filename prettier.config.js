@@ -1,7 +1,7 @@
 /**@type {import("prettier").Config} */
 const config = {
     arrowParens: 'avoid',
-    bracketSpacing: false,
+    bracketSpacing: true,
     printWidth: 80,
     singleQuote: true,
     tabWidth: 4,

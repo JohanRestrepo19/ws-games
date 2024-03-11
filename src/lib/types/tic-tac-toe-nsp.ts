@@ -1,8 +1,8 @@
-import type {Namespace, Socket} from 'socket.io';
+import type { Namespace, Socket } from 'socket.io';
 
 // TicTacToe Namespace
 interface TicTacToeServerToClientEvents {
-    'tic-tac-toe:pong': (payload: {msg: string; number: number}) => void;
+    'tic-tac-toe:pong': (payload: { msg: string; number: number }) => void;
 }
 
 interface TicTacToeClientToServerEvents {

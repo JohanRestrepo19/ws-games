@@ -15,7 +15,7 @@ const WINNER_SET_POSITIONS: Position[][] = [
 
 export type Piece = 'X' | 'O';
 export type Cell = Piece | null;
-export type Position = {row: number; col: number};
+export type Position = { row: number; col: number };
 export type GameState = Piece | 'playing' | 'draw';
 
 /**
@@ -66,11 +66,12 @@ export default class TicTacToe {
      * @throws Error if the game has over.
      */
     makeMove(position: Position): GameState {
-        const {row, col} = position;
+        const { row, col } = position;
 
         // Check for valid move
         if (this.board[row][col]) throw new Error('Not a valid move!');
-        if (this.gameState !== 'playing') throw new Error(`Game has over ${this.gameState} has won`);
+        if (this.gameState !== 'playing')
+            throw new Error(`Game has over ${this.gameState} has won`);
 
         this.board[row][col] = this.currentPiece;
         this.availableMoves--;
@@ -92,7 +93,7 @@ export default class TicTacToe {
             // Check rows, cols and diagonals
             for (const set of WINNER_SET_POSITIONS) {
                 const content = set.map<Cell>(
-                    ({row, col}) => this.board[row][col],
+                    ({ row, col }) => this.board[row][col],
                 );
                 const isWinner = content.every(cell => cell === player);
                 if (isWinner) {

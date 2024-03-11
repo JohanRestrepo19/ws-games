@@ -1,4 +1,4 @@
-import type {Socket, Namespace} from 'socket.io';
+import type { Socket, Namespace } from 'socket.io';
 
 // Main Namespace
 interface ServerToClientEvents {

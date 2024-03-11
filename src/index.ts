@@ -1,15 +1,15 @@
-import {createServer} from 'node:http';
+import { createServer } from 'node:http';
 import express from 'express';
-import {Server} from 'socket.io';
+import { Server } from 'socket.io';
 
-import type {MainNsp, TicTacToeNsp} from './lib/types';
+import type { MainNsp, TicTacToeNsp } from './lib/types';
 
 const requestListener = express();
 const server = createServer(requestListener);
 const port = process.env.PORT || 8080; //TODO: Install dotevn
 
 export const io = new Server(server, {
-    cors: {origin: 'http://localhost:3000'}, // Client url
+    cors: { origin: 'http://localhost:3000' }, // Client url
 });
 
 // ======= Main Namespace =======
@@ -43,7 +43,7 @@ ticTacToeNsp.on('connection', socket => {
     });
 
     socket.on('tic-tac-toe:ping', () => {
-        socket.emit('tic-tac-toe:pong', {msg: 'hola', number: 19});
+        socket.emit('tic-tac-toe:pong', { msg: 'hola', number: 19 });
     });
 });
 
