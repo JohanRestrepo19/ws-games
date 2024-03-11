@@ -1,15 +1,8 @@
 import {createServer} from 'node:http';
 import express from 'express';
-import {Server, Namespace} from 'socket.io';
+import {Server} from 'socket.io';
 
-import type {
-    ClientToServerEvents,
-    InterServerEvents,
-    ServerToClientEvents,
-    SocketData,
-    TicTacToeClientToServerEvents,
-    TicTacToeServerToClientEvents,
-} from './lib/types';
+import type {MainNsp, TicTacToeNsp} from './lib/types';
 
 const requestListener = express();
 const server = createServer(requestListener);
@@ -20,12 +13,7 @@ export const io = new Server(server, {
 });
 
 // ======= Main Namespace =======
-const mainNsp: Namespace<
-    ClientToServerEvents,
-    ServerToClientEvents,
-    InterServerEvents,
-    SocketData
-> = io.of('/');
+const mainNsp: MainNsp = io.of('/');
 
 mainNsp.on('connection', socket => {
     console.log('New connection to Main NSP, ', socket.id);
@@ -35,19 +23,16 @@ mainNsp.on('connection', socket => {
         console.log('Reason: ', reason);
     });
 
-    socket.on('ping', () => {
+    socket.on('main:ping', () => {
         console.log('Ping test message');
-        socket.emit('pong', 'Hello world');
+        socket.emit('main:pong', 'Hello world');
     });
 
     // Event Emmiters.
 });
 
 // ======= TicTacToe Namespace =======
-const ticTacToeNsp: Namespace<
-    TicTacToeClientToServerEvents,
-    TicTacToeServerToClientEvents
-> = io.of('/tic-tac-toe');
+const ticTacToeNsp: TicTacToeNsp = io.of('/tic-tac-toe');
 
 ticTacToeNsp.on('connection', socket => {
     console.log('New connection to TicTacToe NSP, ', socket.id);
@@ -57,8 +42,8 @@ ticTacToeNsp.on('connection', socket => {
         console.log('Reason: ', reason);
     });
 
-    socket.on('ping', () => {
-        socket.emit('pong', {msg: 'hola', number: 19});
+    socket.on('tic-tac-toe:ping', () => {
+        socket.emit('tic-tac-toe:pong', {msg: 'hola', number: 19});
     });
 });
 

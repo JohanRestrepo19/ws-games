@@ -1,8 +1,20 @@
+import type {Namespace, Socket} from 'socket.io';
+
 // TicTacToe Namespace
-export interface TicTacToeServerToClientEvents {
-    pong: (payload: {msg: string; number: number}) => void;
+interface TicTacToeServerToClientEvents {
+    'tic-tac-toe:pong': (payload: {msg: string; number: number}) => void;
 }
 
-export interface TicTacToeClientToServerEvents {
-    ping: () => void;
+interface TicTacToeClientToServerEvents {
+    'tic-tac-toe:ping': () => void;
 }
+
+export type TicTacToeSocket = Socket<
+    TicTacToeClientToServerEvents,
+    TicTacToeServerToClientEvents
+>;
+
+export type TicTacToeNsp = Namespace<
+    TicTacToeClientToServerEvents,
+    TicTacToeServerToClientEvents
+>;

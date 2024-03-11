@@ -1,12 +1,27 @@
+import type {Socket, Namespace} from 'socket.io';
+
 // Main Namespace
-export interface ServerToClientEvents {
-    pong: (msg: string) => void;
+interface ServerToClientEvents {
+    'main:pong': (msg: string) => void;
 }
 
-export interface ClientToServerEvents {
-    ping: () => void;
+interface ClientToServerEvents {
+    'main:ping': () => void;
 }
 
-export interface InterServerEvents {}
+interface InterServerEvents {}
 
-export interface SocketData {}
+interface SocketData {}
+
+export type MainSocket = Socket<
+    ClientToServerEvents,
+    ServerToClientEvents,
+    InterServerEvents,
+    SocketData
+>;
+export type MainNsp = Namespace<
+    ClientToServerEvents,
+    ServerToClientEvents,
+    InterServerEvents,
+    SocketData
+>;
