@@ -10,3 +10,4 @@
 
 ## Notes
 - I need to first declare logic of Rooms creation before even start playing.
+- From the server I need to define the messages that I will send to the client.

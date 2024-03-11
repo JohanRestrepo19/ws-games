@@ -10,7 +10,3 @@ export interface ClientToServerEvents {
 export interface InterServerEvents {}
 
 export interface SocketData {}
-
-// TicTacToe Namespace
-export interface TicTacToeServerToClientEvents {}
-export interface TicTacToeClientToServerEvents {}
