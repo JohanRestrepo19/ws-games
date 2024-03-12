@@ -6,8 +6,11 @@
 - [x] Define server folder structure.
 
 <!-- TODO: Next session -->
-- [ ] Design Rooms Logic for specific Namespaces/Games.
+- [x] Design Rooms Logic for specific Namespaces/Games.
 - [ ] Implement Rooms Logic for specific Namespaces/Games.
+  - [ ] Add custom event for new Socket connections.
+  - [ ] Implement Room Manager Class.
+  - [ ] Implement TicTacToe Class.
 
 - [ ] Figure out how to handle share Event Interfaces in both Client and Server (npm packages).
 - [ ] From the server I need to define the messages that I will send to the client.

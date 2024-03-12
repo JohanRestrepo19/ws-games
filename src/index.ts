@@ -2,13 +2,14 @@ import { createServer } from 'node:http';
 import express from 'express';
 import { Server } from 'socket.io';
 
-import type { MainNsp, TicTacToeNsp } from './lib/types';
+import type { MainNsp, TicTacToeNsp } from '@/lib/types';
+import TicTacToeRoomManager from './models/TicTacToeRoomManager';
 
 const requestListener = express();
 const server = createServer(requestListener);
-const port = process.env.PORT || 8080; //TODO: Install dotevn
+const port = process.env.PORT || 8080; //TODO: Install dotenv
 
-export const io = new Server(server, {
+const io = new Server(server, {
     cors: { origin: 'http://localhost:3000' }, // Client url
 });
 
@@ -33,6 +34,7 @@ mainNsp.on('connection', socket => {
 
 // ======= TicTacToe Namespace =======
 const ticTacToeNsp: TicTacToeNsp = io.of('/tic-tac-toe');
+const ticTacToeRM = new TicTacToeRoomManager();
 
 ticTacToeNsp.on('connection', socket => {
     console.log('New connection to TicTacToe NSP, ', socket.id);
@@ -42,8 +44,24 @@ ticTacToeNsp.on('connection', socket => {
         console.log('Reason: ', reason);
     });
 
+    // I should create an event for fresh connected sockets.
+    socket.emit('tic-tac-toe:room-created', {
+        roomList: ticTacToeRM.getRooms(),
+    });
+
     socket.on('tic-tac-toe:ping', () => {
         socket.emit('tic-tac-toe:pong', { msg: 'hola', number: 19 });
+    });
+
+    socket.on('tic-tac-toe:create-room', () => {
+        ticTacToeRM.create();
+        const updatedRooms = ticTacToeRM.getRooms();
+        console.log({ updatedRooms });
+        console.log(ticTacToeRM);
+
+        ticTacToeNsp.emit('tic-tac-toe:room-created', {
+            roomList: updatedRooms,
+        });
     });
 });
 
