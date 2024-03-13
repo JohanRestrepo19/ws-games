@@ -2,8 +2,8 @@ import { createServer } from 'node:http';
 import express from 'express';
 import { Server } from 'socket.io';
 
+import TicTacToeRoomManager from '@/models/TicTacToeRoomManager';
 import type { MainNsp, TicTacToeNsp } from '@/lib/types';
-import TicTacToeRoomManager from './models/TicTacToeRoomManager';
 
 const requestListener = express();
 const server = createServer(requestListener);
@@ -19,7 +19,7 @@ const mainNsp: MainNsp = io.of('/');
 mainNsp.on('connection', socket => {
     console.log('New connection to Main NSP, ', socket.id);
 
-    // Event Listeners.
+    // EVENT LISTENERS.
     socket.on('disconnect', reason => {
         console.log('Reason: ', reason);
     });
@@ -29,7 +29,7 @@ mainNsp.on('connection', socket => {
         socket.emit('main:pong', 'Hello world');
     });
 
-    // Event Emmiters.
+    // EVENT EMITTERS.
 });
 
 // ======= TicTacToe Namespace =======
@@ -39,29 +39,37 @@ const ticTacToeRM = new TicTacToeRoomManager();
 ticTacToeNsp.on('connection', socket => {
     console.log('New connection to TicTacToe NSP, ', socket.id);
 
-    // Event Listeners.
+    // EVENT LISTENERS.
     socket.on('disconnect', reason => {
         console.log('Reason: ', reason);
+        ticTacToeRM.delete(socket.id);
+        ticTacToeNsp.emit('tic-tac-toe/rooms:updated', {
+            rooms: ticTacToeRM.getRooms(),
+        });
     });
 
-    // I should create an event for fresh connected sockets.
-    socket.emit('tic-tac-toe:room-created', {
-        roomList: ticTacToeRM.getRooms(),
+    socket.on('tic-tac-toe/ping:send', () => {
+        socket.emit('tic-tac-toe/pong:sent', { msg: 'hola', number: 19 });
     });
 
-    socket.on('tic-tac-toe:ping', () => {
-        socket.emit('tic-tac-toe:pong', { msg: 'hola', number: 19 });
-    });
+    socket.on('tic-tac-toe/room:create', () => {
+        const hasRoomBeenCreated = ticTacToeRM.create(socket.id);
 
-    socket.on('tic-tac-toe:create-room', () => {
-        ticTacToeRM.create();
+        // HACK: I could send and error message to notify the player that he has already created a room.
+        if (!hasRoomBeenCreated) return;
+
         const updatedRooms = ticTacToeRM.getRooms();
         console.log({ updatedRooms });
         console.log(ticTacToeRM);
 
-        ticTacToeNsp.emit('tic-tac-toe:room-created', {
-            roomList: updatedRooms,
+        ticTacToeNsp.emit('tic-tac-toe/rooms:updated', {
+            rooms: updatedRooms,
         });
+    });
+
+    // EVENT EMITTERS.
+    socket.emit('tic-tac-toe/rooms:updated', {
+        rooms: ticTacToeRM.getRooms(),
     });
 });
 
