@@ -1,12 +1,15 @@
 import type { Socket, Namespace } from 'socket.io';
 
 // Main Namespace
+
+// [namespace]/[resource]:[action in participle past]:
 interface ServerToClientEvents {
-    'main:pong': (msg: string) => void;
+    'main/pong:sent': (msg: string) => void;
 }
 
+// [namespace]/[resource]:[action in present]:
 interface ClientToServerEvents {
-    'main:ping': () => void;
+    'main/ping:send': () => void;
 }
 
 interface InterServerEvents {}

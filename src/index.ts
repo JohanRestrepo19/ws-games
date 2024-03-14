@@ -24,9 +24,9 @@ mainNsp.on('connection', socket => {
         console.log('Reason: ', reason);
     });
 
-    socket.on('main:ping', () => {
+    socket.on('main/ping:send', () => {
         console.log('Ping test message');
-        socket.emit('main:pong', 'Hello world');
+        socket.emit('main/pong:sent', 'Hello world');
     });
 
     // EVENT EMITTERS.
