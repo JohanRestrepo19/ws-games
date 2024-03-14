@@ -13,6 +13,7 @@ interface TicTacToeServerToClientEvents {
 interface TicTacToeClientToServerEvents {
     'tic-tac-toe/ping:send': () => void;
     'tic-tac-toe/room:create': () => void;
+    'tic-tac-toe/room:delete': () => void;
 }
 
 export type TicTacToeSocket = Socket<

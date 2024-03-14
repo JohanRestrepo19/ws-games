@@ -40,8 +40,7 @@ ticTacToeNsp.on('connection', socket => {
     console.log('New connection to TicTacToe NSP, ', socket.id);
 
     // EVENT LISTENERS.
-    socket.on('disconnect', reason => {
-        console.log('Reason: ', reason);
+    socket.on('disconnect', () => {
         ticTacToeRM.delete(socket.id);
         ticTacToeNsp.emit('tic-tac-toe/rooms:updated', {
             rooms: ticTacToeRM.getRooms(),
@@ -55,15 +54,21 @@ ticTacToeNsp.on('connection', socket => {
     socket.on('tic-tac-toe/room:create', () => {
         const hasRoomBeenCreated = ticTacToeRM.create(socket.id);
 
-        // HACK: I could send and error message to notify the player that he has already created a room.
+        // TODO: Send an error message to notify the player that he has already created a room.
         if (!hasRoomBeenCreated) return;
 
         const updatedRooms = ticTacToeRM.getRooms();
-        console.log({ updatedRooms });
-        console.log(ticTacToeRM);
 
         ticTacToeNsp.emit('tic-tac-toe/rooms:updated', {
             rooms: updatedRooms,
+        });
+    });
+
+    // TODO: During room deletion I need to disconnect players from room.
+    socket.on('tic-tac-toe/room:delete', () => {
+        ticTacToeRM.delete(socket.id);
+        ticTacToeNsp.emit('tic-tac-toe/rooms:updated', {
+            rooms: ticTacToeRM.getRooms(),
         });
     });
 

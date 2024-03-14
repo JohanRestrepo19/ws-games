@@ -21,7 +21,7 @@
     - [x] Investigate which socket field is useful to use as player/socket ID. -> **Socket id** even if it is ephimeral just to not deal with server sessions for the moment.
     - [x] One player/socket should only be able to create one room.
     - [x] Create Room
-    - [ ] Delete Room. -> This action is restricted to the user who has created the room.
-    - [ ] Connet player to room.
+    - [x] Delete Room. -> This action is restricted to the user who has created the room.
+    - [ ] Connect player to room.
     - [ ] Disconnect player from room.
 

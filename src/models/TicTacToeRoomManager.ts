@@ -20,7 +20,7 @@ class TicTacToeRoomManager {
         this.rooms.set(newRoomId, newRoom);
         this.playersRooms.set(playerId, newRoomId);
 
-        console.log({ newRoomId, playerId });
+        this.printInnerMaps();
 
         return true;
     }
@@ -46,8 +46,8 @@ class TicTacToeRoomManager {
     }
 
     printInnerMaps() {
-        console.log(this.rooms);
-        console.log(this.playersRooms);
+        console.log('Players -> Rooms', this.playersRooms);
+        console.log('Rooms -> Game Room', this.rooms);
     }
 
     addPlayerToRoom(roomId: string, player: TicTacToeSocket) {}
