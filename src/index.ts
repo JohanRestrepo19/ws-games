@@ -59,9 +59,7 @@ ticTacToeNsp.on('connection', socket => {
 
         const updatedRooms = ticTacToeRM.getRooms();
 
-        ticTacToeNsp.emit('tic-tac-toe/rooms:updated', {
-            rooms: updatedRooms,
-        });
+        ticTacToeNsp.emit('tic-tac-toe/rooms:updated', { rooms: updatedRooms });
     });
 
     // TODO: During room deletion I need to disconnect players from room.
@@ -71,6 +69,9 @@ ticTacToeNsp.on('connection', socket => {
             rooms: ticTacToeRM.getRooms(),
         });
     });
+
+    socket.on('tic-tac-toe/room:connect', () => {
+    })
 
     // EVENT EMITTERS.
     socket.emit('tic-tac-toe/rooms:updated', {

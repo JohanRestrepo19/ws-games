@@ -13,8 +13,6 @@
 
 - [ ] Figure out how to handle share Event Interfaces in both Client and Server (npm packages).
 
-
-## Next session.
 - [x] Design Rooms Logic for specific Namespaces/Games.
 
 - [ ] Implement Room Manager Class.

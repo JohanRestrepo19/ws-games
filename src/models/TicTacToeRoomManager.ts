@@ -50,7 +50,15 @@ class TicTacToeRoomManager {
         console.log('Rooms -> Game Room', this.rooms);
     }
 
-    addPlayerToRoom(roomId: string, player: TicTacToeSocket) {}
+    addPlayerToRoom(roomId: string, player: TicTacToeSocket): boolean {
+        const requestedRoom = this.rooms.get(roomId);
+
+        if (!requestedRoom) return false;
+
+        return requestedRoom.addPlayer(player);
+    }
+
+    removePlayerFromRoom(player: TicTacToeSocket) {}
 }
 
 export default TicTacToeRoomManager;

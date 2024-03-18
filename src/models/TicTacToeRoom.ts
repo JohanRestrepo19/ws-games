@@ -11,11 +11,12 @@ export default class TicTacToeRoom {
     }
 
     // Tengo que añadir jugadores a la sala
-    addPlayer(player: TicTacToeSocket): void {
+    addPlayer(player: TicTacToeSocket): boolean {
         if (this.players.length < 2) {
             this.players.push(player);
+            return true;
         } else {
-            // TODO: Emit error join message.
+            return false;
         }
     }
 
