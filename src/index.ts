@@ -70,8 +70,9 @@ ticTacToeNsp.on('connection', socket => {
         });
     });
 
-    socket.on('tic-tac-toe/room:connect', () => {
-    })
+    socket.on('tic-tac-toe/room:connect', (roomId, cb) => {
+        cb({ status: true, msg: `Request made for roomId: ${roomId}` });
+    });
 
     // EVENT EMITTERS.
     socket.emit('tic-tac-toe/rooms:updated', {
