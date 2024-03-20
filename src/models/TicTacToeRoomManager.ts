@@ -1,64 +1,45 @@
-import { randomUUID } from 'node:crypto';
-import TicTacToeRoom from './TicTacToeRoom';
-import { type TicTacToeSocket } from '@/lib/types';
+import TicTacToeRoom, { type RoomInfo } from './TicTacToeRoom';
+import type { TicTacToeSocket } from '@/lib/types';
 
 class TicTacToeRoomManager {
-    private rooms: Map<string, TicTacToeRoom>;
-    private playersRooms: Map<string, string>;
+    private roomsMap: Map<string, TicTacToeRoom>;
 
     constructor() {
-        this.rooms = new Map();
-        this.playersRooms = new Map();
+        this.roomsMap = new Map();
     }
 
     create(playerId: string): boolean {
-        if (this.playersRooms.has(playerId)) return false;
+        if (this.doesPlayerOwnRoom(playerId)) return false;
 
-        const newRoom = new TicTacToeRoom();
-        const newRoomId = randomUUID();
-
-        this.rooms.set(newRoomId, newRoom);
-        this.playersRooms.set(playerId, newRoomId);
-
-        this.printInnerMaps();
-
+        const newRoom = new TicTacToeRoom(playerId);
+        this.roomsMap.set(newRoom.getRoomId(), newRoom);
         return true;
     }
 
-    delete(playerId: string): void {
-        if (!this.playersRooms.has(playerId)) return;
-
-        const roomId = this.playersRooms.get(playerId) as string;
-
-        this.rooms.delete(roomId);
-        this.playersRooms.delete(playerId);
-
-        // TODO: Handle Room clean up for TTTRoom class
+    delete(playerId: string): boolean {
+        return false;
     }
 
-    getRooms(): { id: string; createdBy: string }[] {
-        const playersIds = [...this.playersRooms.keys()];
-        const roomsIds = [...this.rooms.keys()];
-
-        return roomsIds.map((roomId, idx) => {
-            return { id: roomId, createdBy: playersIds[idx] };
-        });
-    }
-
-    printInnerMaps() {
-        console.log('Players -> Rooms', this.playersRooms);
-        console.log('Rooms -> Game Room', this.rooms);
+    getRooms(): RoomInfo[] {
+        return [...this.roomsMap.values()].map(room => room.getRoomInfo());
     }
 
     addPlayerToRoom(roomId: string, player: TicTacToeSocket): boolean {
-        const requestedRoom = this.rooms.get(roomId);
-
-        if (!requestedRoom) return false;
-
-        return requestedRoom.addPlayer(player);
+        return true;
     }
 
     removePlayerFromRoom(player: TicTacToeSocket) {}
+
+    private doesPlayerOwnRoom(playerId: string): boolean {
+        return [...this.roomsMap.values()].some(
+            room => room.getCreatedById() === playerId,
+        );
+    }
+
+    printInnerMaps() {
+        console.log('Rooms -> Game Room', this.roomsMap);
+    }
+
 }
 
 export default TicTacToeRoomManager;

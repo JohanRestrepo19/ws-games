@@ -1,15 +1,14 @@
 import type { Namespace, Socket } from 'socket.io';
+import { type Piece } from '@/models/TicTacToe';
+import { type RoomInfo } from '@/models/TicTacToeRoom';
 
 // TicTacToe Namespace
-type Room = { id: string; createdBy: string };
 
 // [namespace]/[resource]:[action in participle past]:
 interface TicTacToeServerToClientEvents {
     'tic-tac-toe/pong:sent': (payload: { msg: string; number: number }) => void;
-    'tic-tac-toe/rooms:updated': (response: { rooms: Room[] }) => void;
-
-    // // NOTE: Maybe it's better to use acknowlegments in this case.
-    // 'tic-tac-toe/rooms:connected': (response: {connected: boolean, msg: string}) => void;
+    'tic-tac-toe/rooms:updated': (response: { rooms: RoomInfo[] }) => void;
+    'tic-tac-toe/piece:assigned': (piece: Piece) => void;
 }
 
 // [namespace]/[resource]:[action in present]:
@@ -18,10 +17,7 @@ interface TicTacToeClientToServerEvents {
     'tic-tac-toe/room:create': () => void;
     'tic-tac-toe/room:delete': () => void;
 
-    'tic-tac-toe/room:connect': (
-        roomId: string,
-        cb: (response: { status: boolean; msg?: string }) => void,
-    ) => void;
+    'tic-tac-toe/room:join': (roomId: string) => void;
 
     'tic-tac-toe/room:disconnect': () => void; // NOTE: Maybe it's better to use acknowlegments in this case.
 }
