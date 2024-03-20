@@ -17,7 +17,13 @@ class TicTacToeRoomManager {
     }
 
     delete(playerId: string): boolean {
-        return false;
+        const room = [...this.roomsMap.values()].find(
+            room => room.getCreatedById() === playerId,
+        );
+
+        if (!room) return false; // The player has not created a room.
+
+        return this.roomsMap.delete(room.getRoomId());
     }
 
     getRooms(): RoomInfo[] {
@@ -36,10 +42,9 @@ class TicTacToeRoomManager {
         );
     }
 
-    printInnerMaps() {
-        console.log('Rooms -> Game Room', this.roomsMap);
+    printMap() {
+        console.log('RoomId -> Room', this.roomsMap);
     }
-
 }
 
 export default TicTacToeRoomManager;

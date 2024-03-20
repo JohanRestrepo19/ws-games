@@ -54,7 +54,6 @@ ticTacToeNsp.on('connection', socket => {
     socket.on('tic-tac-toe/room:create', () => {
         const hasRoomBeenCreated = ticTacToeRM.create(socket.id);
 
-        // TODO: Send an error message to notify the player that he has already created a room.
         if (!hasRoomBeenCreated) return;
 
         const updatedRooms = ticTacToeRM.getRooms();
@@ -62,7 +61,6 @@ ticTacToeNsp.on('connection', socket => {
         ticTacToeNsp.emit('tic-tac-toe/rooms:updated', { rooms: updatedRooms });
     });
 
-    // TODO: During room deletion I need to disconnect players from room.
     socket.on('tic-tac-toe/room:delete', () => {
         ticTacToeRM.delete(socket.id);
         ticTacToeNsp.emit('tic-tac-toe/rooms:updated', {
