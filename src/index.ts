@@ -2,9 +2,6 @@ import { createServer } from 'node:http';
 import express from 'express';
 import { Server } from 'socket.io';
 
-import TicTacToeRoomManager from '@/models/TicTacToeRoomManager';
-import type { MainNsp, TicTacToeNsp } from '@/lib/types';
-
 const requestListener = express();
 const server = createServer(requestListener);
 const port = process.env.PORT || 8080; //TODO: Install dotenv
@@ -14,6 +11,8 @@ const io = new Server(server, {
 });
 
 // ======= Main Namespace =======
+import type { MainNsp } from '@/lib/types';
+
 const mainNsp: MainNsp = io.of('/');
 
 mainNsp.on('connection', socket => {
@@ -33,6 +32,10 @@ mainNsp.on('connection', socket => {
 });
 
 // ======= TicTacToe Namespace =======
+
+import TicTacToeRoomManager from '@/models/TicTacToeRoomManager';
+import { type TicTacToeNsp, ResponseStatus } from '@/lib/types';
+
 const ticTacToeNsp: TicTacToeNsp = io.of('/tic-tac-toe');
 const ticTacToeRM = new TicTacToeRoomManager();
 
@@ -68,8 +71,12 @@ ticTacToeNsp.on('connection', socket => {
         });
     });
 
-    socket.on('tic-tac-toe/room:join', roomId => {
+    socket.on('tic-tac-toe/room:join', (roomId, cb) => {
         console.log('Room Join Requested from: ', roomId);
+
+        cb({
+            status: ResponseStatus.Successful,
+        });
     });
 
     // EVENT EMITTERS.

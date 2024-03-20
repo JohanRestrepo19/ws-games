@@ -3,6 +3,15 @@ import { type Piece } from '@/models/TicTacToe';
 import { type RoomInfo } from '@/models/TicTacToeRoom';
 
 // TicTacToe Namespace
+export enum ResponseStatus {
+    Successful = 'successful',
+    Unsuccessful = 'unsuccessful',
+}
+
+export type JoinRoomResponse = {
+    status: ResponseStatus;
+    msg?: string;
+};
 
 // [namespace]/[resource]:[action in participle past]:
 interface TicTacToeServerToClientEvents {
@@ -17,7 +26,10 @@ interface TicTacToeClientToServerEvents {
     'tic-tac-toe/room:create': () => void;
     'tic-tac-toe/room:delete': () => void;
 
-    'tic-tac-toe/room:join': (roomId: string) => void;
+    'tic-tac-toe/room:join': (
+        roomId: string,
+        cb: (response: JoinRoomResponse) => void,
+    ) => void;
 
     'tic-tac-toe/room:disconnect': () => void; // NOTE: Maybe it's better to use acknowlegments in this case.
 }
