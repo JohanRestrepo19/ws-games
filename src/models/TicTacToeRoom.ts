@@ -29,10 +29,10 @@ export default class TicTacToeRoom {
 
         if (this.players.has('X')) {
             this.players.set('O', player);
-            player.emit('tic-tac-toe/piece:assigned', 'O');
+            player.emit('tic-tac-toe/piece:assigned', { piece: 'O' });
         } else {
             this.players.set('X', player);
-            player.emit('tic-tac-toe/piece:assigned', 'X');
+            player.emit('tic-tac-toe/piece:assigned', { piece: 'X' });
         }
 
         return true;

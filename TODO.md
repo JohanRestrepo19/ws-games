@@ -20,6 +20,7 @@
     - [x] One player/socket should only be able to create one room.
     - [x] Create Room
     - [x] Delete Room. -> This action is restricted to the user who has created the room.
-    - [ ] Connect player to room.
+    - [x] Connect player to room.
     - [ ] Disconnect player from room.
+        - [ ] Do cleanup when a socket disconnects. Which means, remove player/socker from room.
 

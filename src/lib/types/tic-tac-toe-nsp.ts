@@ -17,7 +17,7 @@ export type JoinRoomResponse = {
 interface TicTacToeServerToClientEvents {
     'tic-tac-toe/pong:sent': (payload: { msg: string; number: number }) => void;
     'tic-tac-toe/rooms:updated': (response: { rooms: RoomInfo[] }) => void;
-    'tic-tac-toe/piece:assigned': (piece: Piece) => void;
+    'tic-tac-toe/piece:assigned': (response: { piece: Piece }) => void;
 }
 
 // [namespace]/[resource]:[action in present]:

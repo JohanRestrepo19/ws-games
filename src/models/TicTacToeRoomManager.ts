@@ -31,7 +31,15 @@ class TicTacToeRoomManager {
     }
 
     addPlayerToRoom(roomId: string, player: TicTacToeSocket): boolean {
-        return true;
+        console.log({ roomId, playerId: player.id });
+
+        // First, I need to look if requested room exists.
+        const room = this.roomsMap.get(roomId);
+
+        if (!room) return false;
+
+        // If It does, then I need to try to connect the player.
+        return room.addPlayer(player);
     }
 
     removePlayerFromRoom(player: TicTacToeSocket) {}

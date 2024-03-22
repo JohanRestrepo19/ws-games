@@ -72,11 +72,22 @@ ticTacToeNsp.on('connection', socket => {
     });
 
     socket.on('tic-tac-toe/room:join', (roomId, cb) => {
-        console.log('Room Join Requested from: ', roomId);
+
+        const hasJoinRoom = ticTacToeRM.addPlayerToRoom(roomId, socket);
+
+        ticTacToeRM.printMap();
+
+        if (!hasJoinRoom) {
+            cb({
+                status: ResponseStatus.Unsuccessful,
+                msg: 'Cannot join to room',
+            });
+        }
 
         cb({
             status: ResponseStatus.Successful,
         });
+
     });
 
     // EVENT EMITTERS.
