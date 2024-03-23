@@ -31,8 +31,6 @@ class TicTacToeRoomManager {
     }
 
     addPlayerToRoom(roomId: string, player: TicTacToeSocket): boolean {
-        console.log({ roomId, playerId: player.id });
-
         // First, I need to look if requested room exists.
         const room = this.roomsMap.get(roomId);
 
@@ -42,7 +40,13 @@ class TicTacToeRoomManager {
         return room.addPlayer(player);
     }
 
-    removePlayerFromRoom(player: TicTacToeSocket) {}
+    removePlayerFromRoom(roomId: string, player: TicTacToeSocket): boolean {
+        const room = this.roomsMap.get(roomId);
+
+        if(!room) return false;
+
+        return room.removePlayer(player);
+    }
 
     private doesPlayerOwnRoom(playerId: string): boolean {
         return [...this.roomsMap.values()].some(

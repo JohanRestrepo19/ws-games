@@ -8,7 +8,7 @@ export enum ResponseStatus {
     Unsuccessful = 'unsuccessful',
 }
 
-export type JoinRoomResponse = {
+export type RoomResponse = {
     status: ResponseStatus;
     msg?: string;
 };
@@ -17,7 +17,7 @@ export type JoinRoomResponse = {
 interface TicTacToeServerToClientEvents {
     'tic-tac-toe/pong:sent': (payload: { msg: string; number: number }) => void;
     'tic-tac-toe/rooms:updated': (response: { rooms: RoomInfo[] }) => void;
-    'tic-tac-toe/piece:assigned': (response: { piece: Piece }) => void;
+    'tic-tac-toe/piece:assigned': (response: { piece: Piece | null }) => void;
 }
 
 // [namespace]/[resource]:[action in present]:
@@ -28,10 +28,15 @@ interface TicTacToeClientToServerEvents {
 
     'tic-tac-toe/room:join': (
         roomId: string,
-        cb: (response: JoinRoomResponse) => void,
+        cb: (response: RoomResponse) => void,
     ) => void;
 
-    'tic-tac-toe/room:disconnect': () => void; // NOTE: Maybe it's better to use acknowlegments in this case.
+    'tic-tac-toe/room:leave': (
+        roomId: string,
+        cb: (response: RoomResponse) => void,
+    ) => void;
+
+    'tic-tac-toe/room:disconnect': () => void;
 }
 
 export type TicTacToeSocket = Socket<

@@ -72,22 +72,38 @@ ticTacToeNsp.on('connection', socket => {
     });
 
     socket.on('tic-tac-toe/room:join', (roomId, cb) => {
-
         const hasJoinRoom = ticTacToeRM.addPlayerToRoom(roomId, socket);
-
-        ticTacToeRM.printMap();
 
         if (!hasJoinRoom) {
             cb({
                 status: ResponseStatus.Unsuccessful,
-                msg: 'Cannot join to room',
+                msg: `Requested room is already full`,
             });
         }
+
+        ticTacToeRM.printMap();
 
         cb({
             status: ResponseStatus.Successful,
         });
+    });
 
+    socket.on('tic-tac-toe/room:leave', (roomId, cb) => {
+        console.log('Im about to remove a player from room');
+        const hasLeftRoom = ticTacToeRM.removePlayerFromRoom(roomId, socket);
+
+        if (!hasLeftRoom) {
+            cb({
+                status: ResponseStatus.Unsuccessful,
+                msg: `Something went wrong`,
+            });
+        }
+
+        ticTacToeRM.printMap();
+
+        cb({
+            status: ResponseStatus.Successful,
+        });
     });
 
     // EVENT EMITTERS.
