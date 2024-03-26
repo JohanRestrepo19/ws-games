@@ -40,14 +40,21 @@ const ticTacToeNsp: TicTacToeNsp = io.of('/tic-tac-toe');
 const ticTacToeRM = new TicTacToeRoomManager();
 
 ticTacToeNsp.on('connection', socket => {
-    console.log('New connection to TicTacToe NSP, ', socket.id);
-
     // EVENT LISTENERS.
     socket.on('disconnect', () => {
-        ticTacToeRM.delete(socket.id);
-        ticTacToeNsp.emit('tic-tac-toe/rooms:updated', {
-            rooms: ticTacToeRM.getRooms(),
-        });
+        const hasDeletedRoom = ticTacToeRM.deleteRoom(socket.id);
+        const connectedRoomId = ticTacToeRM.isPlayerInAnyRoom(socket);
+
+        // Just send updated rooms if a room was actually deleted.
+        if (hasDeletedRoom) {
+            ticTacToeNsp.emit('tic-tac-toe/rooms:updated', {
+                rooms: ticTacToeRM.getRooms(),
+            });
+        }
+
+        if (connectedRoomId) {
+            ticTacToeRM.removePlayerFromRoom(connectedRoomId, socket);
+        }
     });
 
     socket.on('tic-tac-toe/ping:send', () => {
@@ -55,7 +62,7 @@ ticTacToeNsp.on('connection', socket => {
     });
 
     socket.on('tic-tac-toe/room:create', () => {
-        const hasRoomBeenCreated = ticTacToeRM.create(socket.id);
+        const hasRoomBeenCreated = ticTacToeRM.createRoom(socket.id);
 
         if (!hasRoomBeenCreated) return;
 
@@ -65,7 +72,7 @@ ticTacToeNsp.on('connection', socket => {
     });
 
     socket.on('tic-tac-toe/room:delete', () => {
-        ticTacToeRM.delete(socket.id);
+        ticTacToeRM.deleteRoom(socket.id);
         ticTacToeNsp.emit('tic-tac-toe/rooms:updated', {
             rooms: ticTacToeRM.getRooms(),
         });

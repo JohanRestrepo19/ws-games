@@ -21,6 +21,8 @@
     - [x] Create Room
     - [x] Delete Room. -> This action is restricted to the user who has created the room.
     - [x] Connect player to room.
-    - [x] Disconnect player from room.
+    - [ ] Disconnect player from room.
         - [x] When click leave room it should leave the room.
+        - [x] Not owner player should leave the room without deleting the room he is leaving.
+        - [ ] If there is any game going on, when the player disconnects, the game state should be reset.
 

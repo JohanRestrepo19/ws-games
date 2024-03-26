@@ -8,7 +8,7 @@ class TicTacToeRoomManager {
         this.roomsMap = new Map();
     }
 
-    create(playerId: string): boolean {
+    createRoom(playerId: string): boolean {
         if (this.doesPlayerOwnRoom(playerId)) return false;
 
         const newRoom = new TicTacToeRoom(playerId);
@@ -16,7 +16,7 @@ class TicTacToeRoomManager {
         return true;
     }
 
-    delete(playerId: string): boolean {
+    deleteRoom(playerId: string): boolean {
         const room = [...this.roomsMap.values()].find(
             room => room.getCreatedById() === playerId,
         );
@@ -43,9 +43,20 @@ class TicTacToeRoomManager {
     removePlayerFromRoom(roomId: string, player: TicTacToeSocket): boolean {
         const room = this.roomsMap.get(roomId);
 
-        if(!room) return false;
+        if (!room) return false;
 
         return room.removePlayer(player);
+    }
+
+    isPlayerInAnyRoom(player: TicTacToeSocket): string | undefined {
+        const rooms = [...this.roomsMap.values()];
+
+        for (const room of rooms) {
+            const roomId = room.isPlayerInRoom(player.id);
+            if (roomId) return roomId;
+        }
+
+        return;
     }
 
     private doesPlayerOwnRoom(playerId: string): boolean {

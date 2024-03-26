@@ -69,6 +69,12 @@ export default class TicTacToeRoom {
         return true;
     }
 
+    isPlayerInRoom(playerId: string): string | undefined {
+        const isPlayer = this.players.some(p => p.id === playerId);
+        if (!isPlayer) return;
+        return this.id;
+    }
+
     getRoomInfo(): RoomInfo {
         return {
             id: this.id,
