@@ -1,5 +1,5 @@
 import type { Namespace, Socket } from 'socket.io';
-import { type Piece } from '@/models/TicTacToe';
+import type { State, Cell, Piece } from '@/models/TicTacToe';
 import { type RoomInfo } from '@/models/TicTacToeRoom';
 
 // TicTacToe Namespace
@@ -13,11 +13,21 @@ export type RoomResponse = {
     msg?: string;
 };
 
+export type GameStateResponse = {
+    availableMoves: number;
+    board: Cell[][];
+    currentPiece: Piece;
+    state: State;
+};
+
 // [namespace]/[resource]:[action in participle past]:
 interface TicTacToeServerToClientEvents {
     'tic-tac-toe/pong:sent': (payload: { msg: string; number: number }) => void;
     'tic-tac-toe/rooms:updated': (response: { rooms: RoomInfo[] }) => void;
     'tic-tac-toe/piece:assigned': (response: { piece: Piece | null }) => void;
+    'tic-tac-toe/game:updated': (response: {
+        game: GameStateResponse;
+    }) => void;
 }
 
 // [namespace]/[resource]:[action in present]:

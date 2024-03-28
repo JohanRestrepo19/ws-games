@@ -1,3 +1,5 @@
+import { GameStateResponse } from '@/lib/types';
+
 // prettier-ignore
 const WINNER_SET_POSITIONS: Position[][] = [
     //Rows
@@ -16,7 +18,7 @@ const WINNER_SET_POSITIONS: Position[][] = [
 export type Piece = 'X' | 'O';
 export type Cell = Piece | null;
 export type Position = { row: number; col: number };
-export type GameState = Piece | 'playing' | 'draw';
+export type State = Piece | 'playing' | 'draw';
 
 /**
  * Represents a Tic Tac Toe Game.
@@ -30,7 +32,7 @@ export default class TicTacToe {
     /**
      * The current state of the game.
      */
-    private gameState: GameState;
+    private state: State;
 
     /**
      * The number of availabe moves left in the game.
@@ -49,7 +51,7 @@ export default class TicTacToe {
     constructor(initialPiece: Piece = 'X') {
         this.currentPiece = initialPiece;
         this.board = [];
-        this.gameState = 'playing';
+        this.state = 'playing';
         this.availableMoves = 9;
 
         for (let rows = 0; rows < 3; rows++) {
@@ -65,13 +67,13 @@ export default class TicTacToe {
      * @throws Error if the move is not valid.
      * @throws Error if the game has over.
      */
-    makeMove(position: Position): GameState {
+    makeMove(position: Position): State {
         const { row, col } = position;
 
         // Check for valid move
         if (this.board[row][col]) throw new Error('Not a valid move!');
-        if (this.gameState !== 'playing')
-            throw new Error(`Game has over ${this.gameState} has won`);
+        if (this.state !== 'playing')
+            throw new Error(`Game has over ${this.state} has won`);
 
         this.board[row][col] = this.currentPiece;
         this.availableMoves--;
@@ -79,7 +81,7 @@ export default class TicTacToe {
         this.checkGameState();
 
         this.currentPiece = this.currentPiece === 'X' ? 'O' : 'X';
-        return this.gameState;
+        return this.state;
     }
 
     /**
@@ -97,14 +99,26 @@ export default class TicTacToe {
                 );
                 const isWinner = content.every(cell => cell === player);
                 if (isWinner) {
-                    this.gameState = player;
+                    this.state = player;
                     break;
                 }
             }
         }
 
         // At this point I need to check if is in a Draw State
-        if (this.availableMoves === 0) this.gameState = 'draw';
+        if (this.availableMoves === 0) this.state = 'draw';
+    }
+
+    /**
+     * @returns Returns the current game state.
+     */
+    getCurrentState(): GameStateResponse {
+        return {
+            availableMoves: this.availableMoves,
+            board: this.board,
+            currentPiece: this.currentPiece,
+            state: this.state,
+        };
     }
 
     printBoard(): void {

@@ -42,17 +42,17 @@ export default class TicTacToeRoom {
             this.players.push({ id: player.id, socket: player, piece: 'X' });
             this.availablePiece.set('X', false);
             player.emit('tic-tac-toe/piece:assigned', { piece: 'X' });
-            return true;
-        }
-
-        if (this.availablePiece.get('O') === true) {
+        } else if (this.availablePiece.get('O') === true) {
             this.players.push({ id: player.id, socket: player, piece: 'O' });
             this.availablePiece.set('O', false);
             player.emit('tic-tac-toe/piece:assigned', { piece: 'O' });
-            return true;
         }
 
-        return false;
+        player.emit('tic-tac-toe/game:updated', {
+            game: this.game.getCurrentState(),
+        });
+
+        return true;
     }
 
     removePlayer(player: TicTacToeSocket): boolean {

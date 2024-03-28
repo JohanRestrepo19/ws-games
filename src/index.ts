@@ -84,15 +84,13 @@ ticTacToeNsp.on('connection', socket => {
         if (!hasJoinRoom) {
             cb({
                 status: ResponseStatus.Unsuccessful,
-                msg: `Requested room is already full`,
+                msg: 'Requested room is already full',
             });
         }
 
         ticTacToeRM.printMap();
 
-        cb({
-            status: ResponseStatus.Successful,
-        });
+        cb({ status: ResponseStatus.Successful });
     });
 
     socket.on('tic-tac-toe/room:leave', (roomId, cb) => {
@@ -100,17 +98,16 @@ ticTacToeNsp.on('connection', socket => {
         const hasLeftRoom = ticTacToeRM.removePlayerFromRoom(roomId, socket);
 
         if (!hasLeftRoom) {
+
             cb({
                 status: ResponseStatus.Unsuccessful,
-                msg: `Something went wrong`,
+                msg: 'Something went wrong',
             });
         }
 
         ticTacToeRM.printMap();
 
-        cb({
-            status: ResponseStatus.Successful,
-        });
+        cb({ status: ResponseStatus.Successful });
     });
 
     // EVENT EMITTERS.
