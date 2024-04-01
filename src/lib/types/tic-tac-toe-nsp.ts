@@ -1,17 +1,11 @@
 import type { Namespace, Socket } from 'socket.io';
 import type { State, Cell, Piece } from '@/models/TicTacToe';
-import { type TicTacToeRoomState } from '@/models/TicTacToeRoom';
 
 // TicTacToe Namespace
 export enum ResponseStatus {
     Successful = 'successful',
     Unsuccessful = 'unsuccessful',
 }
-
-export type RoomResponse = {
-    status: ResponseStatus;
-    msg?: string;
-};
 
 export type GameStateResponse = {
     availableMoves: number;
@@ -20,14 +14,26 @@ export type GameStateResponse = {
     state: State;
 };
 
+export type RoomResponse = {
+    status: ResponseStatus;
+    msg?: string;
+};
+
+export type TicTacToeRoomState = {
+    id: string;
+    createdBy: string;
+    capacity: number;
+    length: number;
+};
+
 // [namespace]/[resource]:[action in participle past]:
 interface TicTacToeServerToClientEvents {
     'tic-tac-toe/pong:sent': (payload: { msg: string; number: number }) => void;
-    'tic-tac-toe/rooms:updated': (response: { rooms: TicTacToeRoomState[] }) => void;
-    'tic-tac-toe/piece:assigned': (response: { piece: Piece | null }) => void;
-    'tic-tac-toe/game:updated': (response: {
-        game: GameStateResponse;
+    'tic-tac-toe/rooms:updated': (response: {
+        rooms: TicTacToeRoomState[];
     }) => void;
+    'tic-tac-toe/piece:assigned': (response: { piece: Piece | null }) => void;
+    'tic-tac-toe/game:updated': (response: { game: GameStateResponse }) => void;
 }
 
 // [namespace]/[resource]:[action in present]:

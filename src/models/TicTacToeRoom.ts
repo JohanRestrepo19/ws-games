@@ -1,18 +1,15 @@
 import { randomUUID } from 'node:crypto';
 import TicTacToe, { type Piece } from './TicTacToe';
-import type { ExposableState, TicTacToeSocket } from '@/lib/types';
+import type {
+    ExposableState,
+    TicTacToeSocket,
+    TicTacToeRoomState,
+} from '@/lib/types';
 
 type Player = {
     id: string;
     socket: TicTacToeSocket;
     piece: Piece;
-};
-
-export type TicTacToeRoomState = {
-    id: string;
-    createdBy: string;
-    capacity: number;
-    length: number;
 };
 
 export default class TicTacToeRoom

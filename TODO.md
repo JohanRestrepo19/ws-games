@@ -11,7 +11,7 @@
     - [ ] Implement TicTacToe Room Class.
     - [ ] Add custom event for new Socket connections.
 
-- [ ] Figure out how to handle share Event Interfaces in both Client and Server (npm packages).
+- [-] Figure out how to handle share Event Interfaces in both Client and Server (npm packages) -> Too much work for just sharing packages for two projects.
 - [x] Use interfaces for classes communication.
 
 - [x] Design Rooms Logic for specific Namespaces/Games.
