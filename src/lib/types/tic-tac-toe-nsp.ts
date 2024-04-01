@@ -7,7 +7,7 @@ export enum ResponseStatus {
     Unsuccessful = 'unsuccessful',
 }
 
-export type GameStateResponse = {
+export type TicTacToeState = {
     availableMoves: number;
     board: Cell[][];
     currentPiece: Piece;
@@ -33,7 +33,7 @@ interface TicTacToeServerToClientEvents {
         rooms: TicTacToeRoomState[];
     }) => void;
     'tic-tac-toe/piece:assigned': (response: { piece: Piece | null }) => void;
-    'tic-tac-toe/game:updated': (response: { game: GameStateResponse }) => void;
+    'tic-tac-toe/game:updated': (response: { game: TicTacToeState }) => void;
 }
 
 // [namespace]/[resource]:[action in present]:

@@ -34,6 +34,7 @@ export default class TicTacToeRoom
         this.game = new TicTacToe();
     }
 
+    // NOTE: En este metodo tengo que manejar el inicio del juego cuando ya hayan dos capacidades.
     addPlayer(player: TicTacToeSocket): boolean {
         if (this.players.length >= this.capacity) return false;
 
@@ -48,12 +49,13 @@ export default class TicTacToeRoom
         }
 
         player.emit('tic-tac-toe/game:updated', {
-            game: this.game.getCurrentState(),
+            game: this.game.getState(),
         });
 
         return true;
     }
 
+    // NOTE: En este metodo tengo que manejar el reincio del juego si el jugador no host se desconecta
     removePlayer(player: TicTacToeSocket): boolean {
         const playerToRemove = this.players.find(p => p.id === player.id);
 

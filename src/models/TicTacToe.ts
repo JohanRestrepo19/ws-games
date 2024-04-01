@@ -1,4 +1,4 @@
-import { GameStateResponse } from '@/lib/types';
+import { ExposableState, TicTacToeState } from '@/lib/types';
 
 // prettier-ignore
 const WINNER_SET_POSITIONS: Position[][] = [
@@ -23,7 +23,7 @@ export type State = Piece | 'playing' | 'draw';
 /**
  * Represents a Tic Tac Toe Game.
  */
-export default class TicTacToe {
+export default class TicTacToe implements ExposableState<TicTacToeState> {
     /**
      * The current piece that is making a move.
      */
@@ -112,7 +112,7 @@ export default class TicTacToe {
     /**
      * @returns Returns the current game state.
      */
-    getCurrentState(): GameStateResponse {
+    getState(): TicTacToeState {
         return {
             availableMoves: this.availableMoves,
             board: this.board,
