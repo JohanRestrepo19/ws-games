@@ -12,6 +12,7 @@
     - [ ] Add custom event for new Socket connections.
 
 - [ ] Figure out how to handle share Event Interfaces in both Client and Server (npm packages).
+- [x] Use interfaces for classes communication.
 
 - [x] Design Rooms Logic for specific Namespaces/Games.
 

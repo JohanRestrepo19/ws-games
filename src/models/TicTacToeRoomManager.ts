@@ -1,7 +1,7 @@
-import TicTacToeRoom, { type RoomInfo } from './TicTacToeRoom';
+import TicTacToeRoom from './TicTacToeRoom';
 import type { TicTacToeSocket } from '@/lib/types';
 
-class TicTacToeRoomManager {
+export default class TicTacToeRoomManager {
     private roomsMap: Map<string, TicTacToeRoom>;
 
     constructor() {
@@ -26,8 +26,8 @@ class TicTacToeRoomManager {
         return this.roomsMap.delete(room.getRoomId());
     }
 
-    getRooms(): RoomInfo[] {
-        return [...this.roomsMap.values()].map(room => room.getRoomInfo());
+    getRooms() {
+        return [...this.roomsMap.values()].map(room => room.getState());
     }
 
     addPlayerToRoom(roomId: string, player: TicTacToeSocket): boolean {
@@ -69,5 +69,3 @@ class TicTacToeRoomManager {
         console.log('RoomId -> Room', this.roomsMap);
     }
 }
-
-export default TicTacToeRoomManager;
