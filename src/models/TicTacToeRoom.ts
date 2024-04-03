@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import TicTacToe, { type Piece } from './TicTacToe';
 import type {
-    ExposableState,
+    ExposableFields,
     TicTacToeSocket,
     TicTacToeRoomState,
 } from '@/lib/types';
@@ -13,7 +13,7 @@ type Player = {
 };
 
 export default class TicTacToeRoom
-    implements ExposableState<TicTacToeRoomState>
+    implements ExposableFields<TicTacToeRoomState>
 {
     private id: string;
     private createdById: string;

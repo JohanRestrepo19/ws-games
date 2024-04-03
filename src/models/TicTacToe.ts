@@ -1,4 +1,4 @@
-import { ExposableState, TicTacToeState } from '@/lib/types';
+import { ExposableFields, TicTacToeState } from '@/lib/types';
 
 // prettier-ignore
 const WINNER_SET_POSITIONS: Position[][] = [
@@ -23,7 +23,7 @@ export type State = Piece | 'playing' | 'draw';
 /**
  * Represents a Tic Tac Toe Game.
  */
-export default class TicTacToe implements ExposableState<TicTacToeState> {
+export default class TicTacToe implements ExposableFields<TicTacToeState> {
     /**
      * The current piece that is making a move.
      */
