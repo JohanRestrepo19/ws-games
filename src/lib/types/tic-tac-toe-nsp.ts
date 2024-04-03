@@ -1,5 +1,6 @@
 import type { Namespace, Socket } from 'socket.io';
-import type { State, Cell, Piece } from '@/models/TicTacToe';
+import type { Piece, TTTExposableFields } from '@/models/TTT';
+import type { TTTRoomExposableFields } from '@/models/TicTacToeRoom';
 
 // TicTacToe Namespace
 export enum ResponseStatus {
@@ -7,33 +8,19 @@ export enum ResponseStatus {
     Unsuccessful = 'unsuccessful',
 }
 
-export type TicTacToeState = {
-    availableMoves: number;
-    board: Cell[][];
-    currentPiece: Piece;
-    state: State;
-};
-
 export type RoomResponse = {
     status: ResponseStatus;
     msg?: string;
-};
-
-export type TicTacToeRoomState = {
-    id: string;
-    createdBy: string;
-    capacity: number;
-    length: number;
 };
 
 // [namespace]/[resource]:[action in participle past]:
 interface TicTacToeServerToClientEvents {
     'tic-tac-toe/pong:sent': (payload: { msg: string; number: number }) => void;
     'tic-tac-toe/rooms:updated': (response: {
-        rooms: TicTacToeRoomState[];
+        rooms: TTTRoomExposableFields[];
     }) => void;
     'tic-tac-toe/piece:assigned': (response: { piece: Piece | null }) => void;
-    'tic-tac-toe/game:updated': (response: { game: TicTacToeState }) => void;
+    'tic-tac-toe/game:updated': (response: { game: TTTExposableFields }) => void;
 }
 
 // [namespace]/[resource]:[action in present]:

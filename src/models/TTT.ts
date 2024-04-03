@@ -9,7 +9,7 @@ export enum State {
     Winner = 'winner',
 }
 
-export type TTTExposableState = {
+export type TTTExposableFields = {
     state: State;
     turn: Piece | null;
     board: (Piece | null)[][];
@@ -33,7 +33,7 @@ const WINNER_SET_POSITIONS: Position[][] = [
     [ {row: 0, col: 2}, {row: 1, col: 1}, {row: 2, col: 0} ],
 ];
 
-export default class TTT implements ExposableFields<TTTExposableState> {
+export default class TTT implements ExposableFields<TTTExposableFields> {
     private state: State;
     private turn: Piece;
     private board: (Piece | null)[][];

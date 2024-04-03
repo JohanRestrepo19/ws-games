@@ -106,6 +106,5 @@ describe('Test TicTacToe Class', () => {
 
             expect(gameState.state).toBe(State.Draw);
         });
-
     });
 });

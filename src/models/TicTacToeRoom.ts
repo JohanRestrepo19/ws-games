@@ -1,10 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import TicTacToe, { type Piece } from './TicTacToe';
-import type {
-    ExposableFields,
-    TicTacToeSocket,
-    TicTacToeRoomState,
-} from '@/lib/types';
+import TTT, { type Piece } from './TTT';
+import type { ExposableFields, TicTacToeSocket } from '@/lib/types';
 
 type Player = {
     id: string;
@@ -12,15 +8,22 @@ type Player = {
     piece: Piece;
 };
 
+export type TTTRoomExposableFields = {
+    id: string;
+    createdBy: string;
+    capacity: number;
+    length: number;
+};
+
 export default class TicTacToeRoom
-    implements ExposableFields<TicTacToeRoomState>
+    implements ExposableFields<TTTRoomExposableFields>
 {
     private id: string;
     private createdById: string;
     private players: Player[];
     private availablePiece: Map<Piece, boolean>;
     private capacity: number;
-    private game: TicTacToe;
+    private game: TTT;
 
     constructor(playerId: string) {
         this.id = randomUUID();
@@ -31,7 +34,7 @@ export default class TicTacToeRoom
             ['O', true],
         ]);
         this.capacity = 2;
-        this.game = new TicTacToe();
+        this.game = new TTT();
     }
 
     // NOTE: En este metodo tengo que manejar el inicio del juego cuando ya hayan dos capacidades.
@@ -76,7 +79,7 @@ export default class TicTacToeRoom
         return this.id;
     }
 
-    getState(): TicTacToeRoomState {
+    getState(): TTTRoomExposableFields {
         return {
             id: this.id,
             createdBy: this.createdById,
