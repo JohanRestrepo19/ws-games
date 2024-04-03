@@ -3,13 +3,13 @@ import type { Piece, TTTExposableFields } from '@/models/TTT';
 import type { TTTRoomExposableFields } from '@/models/TicTacToeRoom';
 
 // TicTacToe Namespace
-export enum ResponseStatus {
+export enum AcknowlegmentStatus {
     Successful = 'successful',
     Unsuccessful = 'unsuccessful',
 }
 
-export type RoomResponse = {
-    status: ResponseStatus;
+export type AcknowlegmentResponse = {
+    status: AcknowlegmentStatus;
     msg?: string;
 };
 
@@ -20,7 +20,9 @@ interface TicTacToeServerToClientEvents {
         rooms: TTTRoomExposableFields[];
     }) => void;
     'tic-tac-toe/piece:assigned': (response: { piece: Piece | null }) => void;
-    'tic-tac-toe/game:updated': (response: { game: TTTExposableFields }) => void;
+    'tic-tac-toe/game:updated': (response: {
+        game: TTTExposableFields;
+    }) => void;
 }
 
 // [namespace]/[resource]:[action in present]:
@@ -31,12 +33,17 @@ interface TicTacToeClientToServerEvents {
 
     'tic-tac-toe/room:join': (
         roomId: string,
-        cb: (response: RoomResponse) => void,
+        cb: (response: AcknowlegmentResponse) => void,
     ) => void;
 
     'tic-tac-toe/room:leave': (
         roomId: string,
-        cb: (response: RoomResponse) => void,
+        cb: (response: AcknowlegmentResponse) => void,
+    ) => void;
+
+    'tic-tac-toe/game:start': (
+        roomId: string,
+        cb: (response: AcknowlegmentResponse) => void,
     ) => void;
 
     'tic-tac-toe/room:disconnect': () => void;

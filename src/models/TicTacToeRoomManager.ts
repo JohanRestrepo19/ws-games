@@ -65,6 +65,24 @@ export default class TicTacToeRoomManager {
         );
     }
 
+    startGame(roomId: string) {
+        const room = this.roomsMap.get(roomId);
+
+        if (!room) throw new Error(`The room ${roomId} was not found.`);
+
+        if (room.getState().length < 2) throw new Error('There are not enough players');
+
+        room.startGame();
+    }
+
+    restartGame(roomId: string) {
+        const room = this.roomsMap.get(roomId);
+        if (!room) throw new Error(`The room ${roomId} was not found.`);
+
+        room.restartGame();
+    }
+
+
     printMap() {
         console.log('RoomId -> Room', this.roomsMap);
     }

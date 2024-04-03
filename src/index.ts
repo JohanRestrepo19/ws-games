@@ -34,7 +34,7 @@ mainNsp.on('connection', socket => {
 // ======= TicTacToe Namespace =======
 
 import TicTacToeRoomManager from '@/models/TicTacToeRoomManager';
-import { type TicTacToeNsp, ResponseStatus } from '@/lib/types';
+import { type TicTacToeNsp, AcknowlegmentStatus } from '@/lib/types';
 
 const ticTacToeNsp: TicTacToeNsp = io.of('/tic-tac-toe');
 const ticTacToeRM = new TicTacToeRoomManager();
@@ -54,7 +54,9 @@ ticTacToeNsp.on('connection', socket => {
 
         if (connectedRoomId) {
             ticTacToeRM.removePlayerFromRoom(connectedRoomId, socket);
+            ticTacToeRM.restartGame(connectedRoomId);
         }
+
     });
 
     socket.on('tic-tac-toe/ping:send', () => {
@@ -83,14 +85,14 @@ ticTacToeNsp.on('connection', socket => {
 
         if (!hasJoinRoom) {
             cb({
-                status: ResponseStatus.Unsuccessful,
+                status: AcknowlegmentStatus.Unsuccessful,
                 msg: 'Requested room is already full',
             });
         }
 
         ticTacToeRM.printMap();
 
-        cb({ status: ResponseStatus.Successful });
+        cb({ status: AcknowlegmentStatus.Successful });
     });
 
     socket.on('tic-tac-toe/room:leave', (roomId, cb) => {
@@ -98,16 +100,30 @@ ticTacToeNsp.on('connection', socket => {
         const hasLeftRoom = ticTacToeRM.removePlayerFromRoom(roomId, socket);
 
         if (!hasLeftRoom) {
-
             cb({
-                status: ResponseStatus.Unsuccessful,
+                status: AcknowlegmentStatus.Unsuccessful,
                 msg: 'Something went wrong',
             });
         }
 
         ticTacToeRM.printMap();
 
-        cb({ status: ResponseStatus.Successful });
+        cb({ status: AcknowlegmentStatus.Successful });
+    });
+
+    socket.on('tic-tac-toe/game:start', (roomId, cb) => {
+        try {
+            ticTacToeRM.startGame(roomId);
+            cb({
+                status: AcknowlegmentStatus.Successful,
+            });
+            ticTacToeRM.printMap();
+        } catch (err) {
+            cb({
+                status: AcknowlegmentStatus.Unsuccessful,
+                msg: err.message,
+            });
+        }
     });
 
     // EVENT EMITTERS.
