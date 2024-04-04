@@ -27,7 +27,7 @@ export default class TicTacToeRoomManager {
     }
 
     getRooms() {
-        return [...this.roomsMap.values()].map(room => room.getState());
+        return [...this.roomsMap.values()].map(room => room.getFields());
     }
 
     addPlayerToRoom(roomId: string, player: TicTacToeSocket): boolean {
@@ -70,7 +70,7 @@ export default class TicTacToeRoomManager {
 
         if (!room) throw new Error(`The room ${roomId} was not found.`);
 
-        if (room.getState().length < 2) throw new Error('There are not enough players');
+        if (room.getFields().length < 2) throw new Error('There are not enough players');
 
         room.startGame();
     }

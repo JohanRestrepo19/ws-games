@@ -1,12 +1,7 @@
 import { randomUUID } from 'node:crypto';
-import TTT, { type Piece } from './TTT';
 import type { ExposableFields, TicTacToeSocket } from '@/lib/types';
-
-type Player = {
-    id: string;
-    socket: TicTacToeSocket;
-    piece: Piece;
-};
+import TTT, { type Piece } from './TTT';
+import TTTPlayer from './Player';
 
 export type TTTRoomExposableFields = {
     id: string;
@@ -20,7 +15,7 @@ export default class TicTacToeRoom
 {
     private id: string;
     private createdById: string;
-    private players: Player[];
+    private players: TTTPlayer[];
     private availablePiece: Map<Piece, boolean>;
     private capacity: number;
     private game: TTT;
@@ -41,30 +36,32 @@ export default class TicTacToeRoom
         if (this.players.length >= this.capacity) return false;
 
         if (this.availablePiece.get('X') === true) {
-            this.players.push({ id: player.id, socket: player, piece: 'X' });
+            this.players.push(new TTTPlayer(player.id, player, 'X'));
             this.availablePiece.set('X', false);
             player.emit('tic-tac-toe/piece:assigned', { piece: 'X' });
         } else if (this.availablePiece.get('O') === true) {
-            this.players.push({ id: player.id, socket: player, piece: 'O' });
+            this.players.push(new TTTPlayer(player.id, player, 'O'));
             this.availablePiece.set('O', false);
             player.emit('tic-tac-toe/piece:assigned', { piece: 'O' });
         }
 
         player.emit('tic-tac-toe/game:updated', {
-            game: this.game.getState(),
+            game: this.game.getFields(),
         });
 
         return true;
     }
 
     removePlayer(player: TicTacToeSocket): boolean {
-        const playerToRemove = this.players.find(p => p.id === player.id);
+        const playerToRemove = this.players.find(
+            p => p.getFields().id === player.id,
+        );
 
         if (!playerToRemove) return false;
 
-        this.availablePiece.set(playerToRemove.piece, true);
+        this.availablePiece.set(playerToRemove.getFields().piece, true);
 
-        this.players = this.players.filter(p => p.id !== player.id);
+        this.players = this.players.filter(p => p.getFields().id !== player.id);
 
         player.emit('tic-tac-toe/piece:assigned', { piece: null });
 
@@ -72,7 +69,7 @@ export default class TicTacToeRoom
     }
 
     isPlayerInRoom(playerId: string): string | undefined {
-        const isPlayer = this.players.some(p => p.id === playerId);
+        const isPlayer = this.players.some(p => p.getFields().id === playerId);
         if (!isPlayer) return;
         return this.id;
     }
@@ -89,13 +86,13 @@ export default class TicTacToeRoom
 
     private notifyGameUpdate() {
         for (const player of this.players) {
-            player.socket.emit('tic-tac-toe/game:updated', {
-                game: this.game.getState(),
+            player.getFields().socket.emit('tic-tac-toe/game:updated', {
+                game: this.game.getFields(),
             });
         }
     }
 
-    getState(): TTTRoomExposableFields {
+    getFields(): TTTRoomExposableFields {
         return {
             id: this.id,
             createdBy: this.createdById,

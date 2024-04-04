@@ -105,7 +105,7 @@ export default class TTT implements ExposableFields<TTTExposableFields> {
         return State.Playing;
     }
 
-    getState() {
+    getFields() {
         return {
             state: this.state,
             turn: this.turn,

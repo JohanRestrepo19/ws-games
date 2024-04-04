@@ -9,30 +9,30 @@ describe('Test TicTacToe Class', () => {
 
     describe('Initialization', () => {
         test('Should initialize with X', () => {
-            const gameState = game.getState();
+            const gameState = game.getFields();
             expect(gameState.turn).toBe<Piece>('X');
         });
 
         test('Should initialize with O', () => {
-            const state = new TTT('O').getState();
+            const state = new TTT('O').getFields();
             expect(state.turn).toBe<Piece>('O');
         });
 
         test('Should initialize with available moves set to 9', () => {
-            expect(game.getState().availableMoves).toBe(9);
+            expect(game.getFields().availableMoves).toBe(9);
         });
 
         test('Initial state should be idle', () => {
-            expect(game.getState().state).toBe(State.Idle);
+            expect(game.getFields().state).toBe(State.Idle);
         });
 
         test('Should change to playing state', () => {
             game.startGame();
-            expect(game.getState().state).toBe(State.Playing);
+            expect(game.getFields().state).toBe(State.Playing);
         });
 
         test('Should initialize with an empty board', () => {
-            expect(game.getState().board).toEqual([
+            expect(game.getFields().board).toEqual([
                 [null, null, null],
                 [null, null, null],
                 [null, null, null],
@@ -47,7 +47,7 @@ describe('Test TicTacToe Class', () => {
 
         test('Should make a valid move and switch player', () => {
             game.makeMove({ row: 0, col: 0 });
-            const gameState = game.getState();
+            const gameState = game.getFields();
 
             expect(gameState.state).toBe(State.Playing);
             expect(gameState.turn).toBe('O');
@@ -68,7 +68,7 @@ describe('Test TicTacToe Class', () => {
             game.makeMove({ row: 1, col: 1 });
             game.makeMove({ row: 0, col: 2 });
 
-            const gameState = game.getState();
+            const gameState = game.getFields();
 
             expect(gameState.turn).toBe('X');
             expect(gameState.state).toBe(State.Winner);
@@ -84,7 +84,7 @@ describe('Test TicTacToe Class', () => {
             game.makeMove({ row: 1, col: 1 });
             game.makeMove({ row: 0, col: 2 });
 
-            const gameState = game.getState();
+            const gameState = game.getFields();
             expect(gameState.turn).toBe('O');
             expect(gameState.state).toBe(State.Winner);
         });
@@ -102,7 +102,7 @@ describe('Test TicTacToe Class', () => {
             game.makeMove({ row: 2, col: 1 });
             game.makeMove({ row: 1, col: 2 });
             game.makeMove({ row: 2, col: 2 });
-            const gameState = game.getState();
+            const gameState = game.getFields();
 
             expect(gameState.state).toBe(State.Draw);
         });
