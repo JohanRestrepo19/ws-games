@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import type { ExposableFields, TicTacToeSocket } from '@/lib/types';
 import TTT, { type Piece } from './TTT';
-import TTTPlayer from './Player';
+import TTTPlayer from './TTTPlayer';
 
 export type TTTRoomExposableFields = {
     id: string;
@@ -64,6 +64,8 @@ export default class TicTacToeRoom
         this.players = this.players.filter(p => p.getFields().id !== player.id);
 
         player.emit('tic-tac-toe/piece:assigned', { piece: null });
+
+        //TODO: Need to reset Game State if player leave Room out of nowhere.
 
         return true;
     }
