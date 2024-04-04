@@ -19,6 +19,11 @@ interface TicTacToeServerToClientEvents {
     'tic-tac-toe/rooms:updated': (response: {
         rooms: TTTRoomExposableFields[];
     }) => void;
+
+    'tic-tac-toe/room:updated': (response: {
+        room: TTTRoomExposableFields
+    }) => void;
+
     'tic-tac-toe/piece:assigned': (response: { piece: Piece | null }) => void;
     'tic-tac-toe/game:updated': (response: {
         game: TTTExposableFields;

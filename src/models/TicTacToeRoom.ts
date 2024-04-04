@@ -30,6 +30,9 @@ export default class TicTacToeRoom
         ]);
         this.capacity = 2;
         this.game = new TTT();
+
+        this.notifyGameUpdate();
+        this.notifyRoomUpdate();
     }
 
     addPlayer(player: TicTacToeSocket): boolean {
@@ -45,9 +48,8 @@ export default class TicTacToeRoom
             player.emit('tic-tac-toe/piece:assigned', { piece: 'O' });
         }
 
-        player.emit('tic-tac-toe/game:updated', {
-            game: this.game.getFields(),
-        });
+        this.notifyGameUpdate();
+        this.notifyRoomUpdate();
 
         return true;
     }
@@ -66,6 +68,8 @@ export default class TicTacToeRoom
         player.emit('tic-tac-toe/piece:assigned', { piece: null });
 
         //TODO: Need to reset Game State if player leave Room out of nowhere.
+
+        this.notifyRoomUpdate();
 
         return true;
     }
@@ -90,6 +94,14 @@ export default class TicTacToeRoom
         for (const player of this.players) {
             player.getFields().socket.emit('tic-tac-toe/game:updated', {
                 game: this.game.getFields(),
+            });
+        }
+    }
+
+    private notifyRoomUpdate() {
+        for (const player of this.players) {
+            player.getFields().socket.emit('tic-tac-toe/room:updated', {
+                room: this.getFields(),
             });
         }
     }
